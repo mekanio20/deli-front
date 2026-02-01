@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Inter";
+  src: url("@/assets/fonts/Inter/Inter-VariableFont_opsz,wght.woff2")
+       format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    font-family: "Inter", sans-serif;
+  }
+  img {
+    user-select: none;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  /* Firefox */
+  .no-scrollbar {
+    scrollbar-width: none; /* gizle */
+  }
+
+  /* Chrome, Safari, Edge */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .date_picker input {
+    @apply !block !px-[30px] !pl-[35px] !py-[16px] !w-full !rounded-[10px] !border-none active:border-gray-300 focus:border-gray-300 !bg-main-gray !text-black !placeholder-placeholder-color focus:outline-none;
+  }
+}
