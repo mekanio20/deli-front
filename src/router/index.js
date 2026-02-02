@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuthStore } from "@/stores/auth"
+import { useAppStore } from "@/stores/app"
+import { useAuthStore } from "@/stores/auth";
 
 const routes = [
   // DEVELOPMENT
@@ -126,9 +127,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const app = useAppStore()
   const auth = useAuthStore()
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    auth.openRegister()
+    app.toggleModal('register')
     next(false)
   } else {
     next()

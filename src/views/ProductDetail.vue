@@ -187,6 +187,7 @@ import { useSEOHelper } from '@/composables/useSEOHelper'
 
 const isMobile = ref(false)
 const route = useRoute()
+const appStore = useAppStore()
 const authStore = useAuthStore()
 const likesStore = useLikesStore()
 const productsStore = useProductsStore()
@@ -228,7 +229,7 @@ const allImages = computed(() => {
 const toggleFavorite = async (id) => {
     try {
         if (!authStore.isAuthenticated) {
-            await authStore.openRegister()
+            await appStore.toggleModal('register')
             return
         }
         isLiked.value = !isLiked.value

@@ -7,6 +7,7 @@ import {
   clearTokens,
 } from "@/composables/useTokens";
 import router from "@/router/index.js";
+import { useAppStore } from "@/stores/app";
 
 const api = axios.create({
   baseURL: "https://tamrahat.com.tm:8000/api/v1/",
@@ -28,7 +29,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 let isRefreshing = false;
@@ -48,7 +49,12 @@ const processQueue = (error, token = null) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const appStore = useAppStore();
     const originalRequest = error.config;
+
+    if (appStore.activeModal === 'login') {
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -85,7 +91,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

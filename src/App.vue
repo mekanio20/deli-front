@@ -9,10 +9,11 @@
   <!-- Auth Modals -->
   <RegisterModal :modelValue="appStore.activeModal === 'register'" @close="appStore.toggleModal('register')"
     @redirect="redirectModal" />
-  <LoginModal :isOpen="appStore.activeModal === 'login'" @close="appStore.toggleModal('login')"
+  <LoginModal :modelValue="appStore.activeModal === 'login'" @close="appStore.toggleModal('login')"
     @redirect="redirectModal" />
-  <OtpModal :isOpen="appStore.activeModal === 'otp'" @close="appStore.toggleModal('otp')" @redirect="redirectModal" />
-  <ResetPasswordModal :isOpen="appStore.activeModal === 'password'" @close="appStore.toggleModal('password')"
+  <OtpModal :modelValue="appStore.activeModal === 'otp'" @close="appStore.toggleModal('otp')"
+    @redirect="redirectModal" />
+  <ResetPasswordModal :modelValue="appStore.activeModal === 'password'" @close="appStore.toggleModal('password')"
     @redirect="redirectModal" />
 
 </template>

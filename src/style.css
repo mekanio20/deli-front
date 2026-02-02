@@ -5,7 +5,7 @@
 @font-face {
   font-family: "Inter";
   src: url("@/assets/fonts/Inter/Inter-VariableFont_opsz,wght.woff2")
-       format("woff2-variations");
+    format("woff2-variations");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -39,6 +39,33 @@
     display: none;
   }
 
+  /* Modal Transitions */
+  .modal-enter-active,
+  .modal-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .modal-enter-from,
+  .modal-leave-to {
+    opacity: 0;
+  }
+
+  .modal-enter-active .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Date Picker */
   .date_picker input {
     @apply !block !px-[30px] !pl-[35px] !py-[16px] !w-full !rounded-[10px] !border-none active:border-gray-300 focus:border-gray-300 !bg-main-gray !text-black !placeholder-placeholder-color focus:outline-none;
   }

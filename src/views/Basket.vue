@@ -272,6 +272,7 @@
 const loyaltyAction = ref(sessionStorage.getItem('loyaltyAction') || 'apply_cashback')
 import { formatToYYYYMMDD } from "@/composables/useFormatDate.js"
 const authStore = useAuthStore()
+const appStore = useAppStore()
 const cartStore = useCartStore()
 const productStore = useProductsStore()
 const likesStore = useLikesStore()
@@ -319,12 +320,12 @@ onMounted(async () => {
 
 // Methods
 const handleShowLoyaltyCardModal = () => {
-    if (!authStore.isAuthenticated) authStore.openRegister()
+    if (!authStore.isAuthenticated) appStore.toggleModal('register')
     else showLoyaltyCardModal.value = true
 }
 
 const handleShowGiftCardModal = () => {
-    if (!authStore.isAuthenticated) authStore.openRegister()
+    if (!authStore.isAuthenticated) appStore.toggleModal('register')
     else showGiftCardModal.value = true
 }
 
@@ -412,7 +413,7 @@ const handleRemoveLoyaltyCard = async () => {
 const toggleLike = async (productId) => {
     try {
         if (!authStore.isAuthenticated) {
-            await authStore.openRegister()
+            await appStore.toggleModal('register')
             return
         }
         const likeItem = likes.value.find(item => item.product === productId)

@@ -167,7 +167,7 @@
     "use_balance": "Использовать баллы"
   },
   "forms": {
-    "name": "Имя",
+    "name": "Полное имя",
     "surname": "Фамилия",
     "password": "Пароль",
     "phoneNumber": "Телефон",

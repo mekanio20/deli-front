@@ -26,7 +26,7 @@
                     </div>
 
                     <!-- Content -->
-                    <FormSection @submit.prevent="handleSubmit" class="grid grid-cols-2 gap-2">
+                    <FormSection @submit="handleSubmit" class="grid grid-cols-2 gap-2">
                         <!-- Region Selector -->
                         <FormGroup>
                             <FormTitle :id="'region'" :title="$t('forms.select_street')" />

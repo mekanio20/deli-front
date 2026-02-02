@@ -4,7 +4,7 @@
             class="absolute left-4 top-1/2 -translate-y-1/2" />
         <input :disabled="disabled" :id="label" :type="type" :required="required" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
             :placeholder="placeholder"
-            class="w-full sm:text-base text-sm px-5 py-4 bg-[#F6F7F9] border-0 rounded-[10px] focus:ring-1 focus:ring-[#FEB918] focus:bg-white outline-none transition-all duration-200 pr-12"
+            class="w-full sm:text-base text-sm px-5 py-4 bg-[#F5F5F7] border-0 rounded-2xl focus:ring-1 focus:ring-[#DE0045] focus:bg-white outline-none transition-all duration-200 pr-12"
             :class="{ 'pl-12': icon?.name, 'cursor-not-allowed': disabled, 'capitalize': capitalize }" />
     </div>
 </template>
