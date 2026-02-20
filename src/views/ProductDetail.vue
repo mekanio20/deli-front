@@ -12,7 +12,7 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                         <!-- Left Side - Images -->
-                        <div class="flex lg:flex-row flex-col-reverse gap-y-4 sm:mt-0 mt-6"
+                        <div class="flex flex-col-reverse gap-y-4 sm:mt-0 mt-6"
                             :class="[product_info?.image_urls?.length > 0 ? 'lg:gap-x-4' : '']">
 
                             <!-- Thumbnail Images with Swiper -->
@@ -24,8 +24,8 @@
                                     <div class="flex lg:flex-col flex-row lg:space-y-2 lg:space-x-0 space-x-2">
                                         <div v-for="(image, index) in allImages" :key="index"
                                             @click="selectedImage = image; currentImageIndex = index"
-                                            class="w-[100px] h-[100px] flex-shrink-0 rounded-lg bg-[#F6F7F9] border-[1px] transition-all duration-200 hover:border-[#FEB918] cursor-pointer"
-                                            :class="selectedImage === image ? 'border-[#FEB918]' : ''">
+                                            class="w-[100px] h-[100px] flex-shrink-0 rounded-lg bg-[#F6F7F9] border-[1px] transition-all duration-200 hover:border-[#DE0045] cursor-pointer"
+                                            :class="selectedImage === image ? 'border-[#DE0045]' : ''">
                                             <img :src="image" class="w-full h-full object-cover rounded-lg">
                                         </div>
                                     </div>
@@ -34,7 +34,7 @@
                             <div v-else
                                 class="flex items-start lg:flex-col flex-row lg:space-y-2 lg:space-x-0 space-x-2 mr-2">
                                 <div
-                                    class="w-[100px] h-[100px] rounded-lg bg-[#F6F7F9] border-[1px] transition-all duration-200 border-[#FEB918]">
+                                    class="w-[100px] h-[100px] rounded-lg bg-[#F6F7F9] border-[1px] transition-all duration-200 border-[#DE0045]">
                                     <img :src="selectedImage || product_info?.preview?.path || '/icons/default.webp'"
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
@@ -73,20 +73,20 @@
 
                             <!-- Product Info -->
                             <div class="space-y-4">
-                                <div class="flex items-center justify-between py-3 border-b border-[#EDEDED]">
-                                    <span class="text-[#ABABAB] sm:text-base text-sm uppercase tracking-wide">{{
+                                <div class="flex items-center justify-between py-3 px-4 bg-[#F5F5F7] rounded-xl">
+                                    <span class="text-[#000000] sm:text-base text-sm uppercase tracking-wide">{{
                                         $t('forms.barcode') }}</span>
                                     <span class="text-[#0C1A30] sm:text-base text-sm font-medium">{{
                                         product_info.barcode }}</span>
                                 </div>
-                                <div class="flex items-center justify-between py-3 border-b border-[#EDEDED]">
-                                    <span class="text-[#ABABAB] sm:text-base text-sm uppercase tracking-wide">{{
+                                <div class="flex items-center justify-between py-3 px-4 bg-[#F5F5F7] rounded-xl">
+                                    <span class="text-[#000000] sm:text-base text-sm uppercase tracking-wide">{{
                                         $t('page.category') }}</span>
                                     <span class="text-[#0C1A30] sm:text-base text-sm font-medium">{{
                                         product_info.category_name }}</span>
                                 </div>
-                                <div v-if="product_info?.brand_name" class="flex items-center justify-between py-3">
-                                    <span class="text-[#ABABAB] sm:text-base text-sm uppercase tracking-wide">{{
+                                <div v-if="product_info?.brand_name" class="flex items-center justify-between py-3 px-4 bg-[#F5F5F7] rounded-xl">
+                                    <span class="text-[#000000] sm:text-base text-sm uppercase tracking-wide">{{
                                         $t('page.brand') }}</span>
                                     <span class="text-[#0C1A30] sm:text-base text-sm font-medium">{{
                                         product_info.brand_name }}</span>
@@ -103,16 +103,16 @@
                             <!-- Add to Cart Button / Quantity Controls -->
                             <div class="flex flex-row items-center space-x-3">
                                 <!-- Add to Cart Button -->
-                                <button v-if="!cartIsInCart" @click="addToCart" :disabled="cartLoading" class="flex-1 w-full bg-[#FEB918] hover:bg-[#ffcf5f] text-white
+                                <button v-if="!cartIsInCart" @click="addToCart" :disabled="cartLoading" class="flex-1 w-full bg-[#DE0045] hover:bg-[#ff1c64] text-white
           h-[48px] px-6 sm:px-8
-          rounded-[10px] transition-all duration-200 font-semibold
+          rounded-full transition-all duration-200 font-semibold
           text-[16px] sm:text-[18px] cursor-pointer text-nowrap"
                                     :class="{ 'disabled:opacity-60 disabled:cursor-not-allowed': cartLoading }">
                                     {{ cartLoading ? $t('buttons.adding') : $t('buttons.add_to_cart') }} </button>
 
                                 <button v-if="!cartIsInCart" @click="addToCartRedirectOrder" :disabled="cartLoading" class="flex-1 w-full bg-[#037D84] hover:bg-[#0e9ea5] text-white
           h-[48px] px-6 sm:px-8
-          rounded-[10px] transition-all duration-200 font-medium
+          rounded-full transition-all duration-200 font-medium
           text-[14px] sm:text-[18px] cursor-pointer text-nowrap"
                                     :class="{ 'disabled:opacity-60 disabled:cursor-not-allowed': cartLoading }">
                                     {{ $t('buttons.add_order') }}
@@ -130,7 +130,7 @@
                                     <!-- Quantity Controls -->
                                     <div class="flex flex-row items-center sm:space-x-4 space-x-3">
                                         <!-- Decrease -->
-                                        <button @click="decreaseQuantity" :disabled="cartLoading" class="p-3 rounded-[10px] bg-[#FEB918] hover:bg-[#ffcf5f]
+                                        <button @click="decreaseQuantity" :disabled="cartLoading" class="p-3 rounded-[10px] bg-[#DE0045] hover:bg-[#ffcf5f]
               flex items-center justify-center
               disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200">
                                             <minus-icon :size="24" />
@@ -142,7 +142,7 @@
                                         </div>
 
                                         <!-- Increase -->
-                                        <button @click="increaseQuantity" :disabled="cartLoading" class="p-3 rounded-[10px] bg-[#FEB918] hover:bg-[#ffcf5f]
+                                        <button @click="increaseQuantity" :disabled="cartLoading" class="p-3 rounded-[10px] bg-[#DE0045] hover:bg-[#ffcf5f]
               flex items-center justify-center
               disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200">
                                             <plus-icon :size="24" />
@@ -151,9 +151,9 @@
                                 </div>
 
                                 <!-- Favorite Button -->
-                                <button @click="toggleFavorite(product_info.id)"
-                                    class="w-fit p-3 bg-[#FEB91829] rounded-[10px] transition-all duration-200 flex justify-center">
-                                    <favorite-icon color="#FEB918" :fill="isLiked ? '#FEB918' : 'none'" />
+                                <button type="button" @click="toggleFavorite(product_info.id)"
+                                    class="w-fit p-4 bg-[#F3F4F6] rounded-full transition-all duration-200 flex justify-center">
+                                    <hearth-icon :size="22" :color="isLiked ? '#DE0045' : '#A9A9A9'" :fill="isLiked ? '#DE0045' : 'none'" />
                                 </button>
                             </div>
 

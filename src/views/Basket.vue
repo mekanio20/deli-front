@@ -311,7 +311,6 @@ onMounted(async () => {
         if (authStore.isAuthenticated) {
             if (!cartStore.cartInfo.loyalty_card_info && clientStore.account.loyalty_card) applyLoyaltyCard(clientStore.account.loyalty_card.id, "apply_cashback")
             await fetchAccount()
-            await fetchLikes()
         }
     } catch (error) {
         console.error('Error loading cart:', error)

@@ -7,7 +7,7 @@
                 <img :src="product?.preview?.path || '/icons/default.webp'" class="w-full h-full object-cover">
 
                 <!-- Favorite -->
-                <button type="button" @click.stop="toggleLike" class="absolute right-2 top-2">
+                <button type="button" @click.stop="toggleFavorite(product.id)" class="absolute right-2 top-2">
                     <div class="w-[35px] h-[35px] rounded-full bg-white flex items-center justify-center">
                         <hearth-icon v-if="!isLiked" color="#A9A9A9" :size="16" />
                         <hearth-icon v-else color="#FA004C" fill="#FA004C" :size="16" />
@@ -88,24 +88,23 @@ const goToDetail = (id) => {
     router.push({ name: "ProductDetail", params: { id } })
 }
 
-const toggleLike = async () => {
+const toggleFavorite = async (id) => {
     try {
         if (!authStore.isAuthenticated) {
             await appStore.toggleModal('register')
             return
         }
-        if (isLiked.value) {
-            const likeItem = likesStore.likes.value.find(item => item.product === props.product.id)
-            if (likeItem) {
-                await likesStore.deleteLike(likeItem.id)
-                isLiked.value = false
-            }
+        isLiked.value = !isLiked.value
+        if (!props.product.is_liked) {
+            likesStore.createLike(id)
+            return
         } else {
-            await likesStore.createLike(props.product.id)
-            isLiked.value = true
+            const likes = await likesStore.fetchLikes({ product: id })
+            await likesStore.deleteLike(likes[0].id)
         }
     } catch (error) {
-        console.error('Error toggling like:', error)
+        console.log(error);
+        isLiked.value = !isLiked.value
     }
 }
 

@@ -54,6 +54,10 @@ export const useLikesStore = defineStore("likes", () => {
     error.value = null;
     try {
       const { data } = await api.get("/likes/liked_products/");
+      likes.value = data.results.map((item) => ({
+        ...item,
+        is_liked: true
+      }));
       return data.results;
     } catch (err) {
       error.value = err.message || "Failed to fetch liked products";

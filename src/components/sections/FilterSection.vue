@@ -1,26 +1,11 @@
 <template>
     <!-- Filter Controls -->
-    <section class="flex flex-wrap items-center gap-3 mb-6 mt-5">
-        <!-- Offer Button -->
-        <!-- <button
-            class="bg-gradient-to-r from-[#FF6F00] to-[#FEB918] hover:bg-orange-600 px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-3 group">
-            <span class="text-white font-semibold">Arzanladyş</span>
-            <offer-icon />
-        </button> -->
-
-        <!-- Filter Dropdown -->
-        <div class="relative" ref="filterRef">
-            <button @click="$emit('openFilter')"
-                class="bg-[#F6F7F9] px-4 py-3 rounded-lg transition-all duration-300 flex items-center gap-3">
-                <filter-icon />
-                <span class="text-[#0C1A30] sm:text-base text-sm">{{ $t('names.filter') }}</span>
-            </button>
-        </div>
+    <section class="flex flex-wrap items-center justify-end gap-3 mb-6 mt-5">
 
         <!-- Sort Dropdown -->
         <div class="relative" ref="sortRef">
             <button @click="toggleSort"
-                class="bg-[#F6F7F9] px-4 py-3 rounded-lg transition-all duration-300 flex items-center justify-between gap-3 sm:min-w-[215px] min-w-[180px]">
+                class="bg-[#F6F7F9] px-4 py-3 rounded-full transition-all duration-300 flex items-center justify-between gap-3 sm:min-w-[215px] min-w-[180px]">
                 <div class="flex items-center gap-3">
                     <sort-icon />
                     <span class="text-[#0C1A30] sm:text-base text-sm"> {{ selectedSort.name }}</span>
@@ -31,13 +16,13 @@
             <!-- Sort Options Menu -->
             <Transition name="dropdown">
                 <div v-if="isSortOpen"
-                    class="absolute top-full left-0 mt-2 bg-white shadow-xl border border-[#F6F7F9] sm:min-w-[250px] w-[200px] rounded-lg z-50">
+                    class="absolute top-full left-0 mt-2 bg-white shadow-xl border border-[#E4004F] sm:min-w-[250px] w-[200px] rounded-lg z-50">
                     <div v-for="(option, index) in options" :key="index" @click="selectSort(option)"
                         class="flex items-center px-4 py-3 cursor-pointer transition-all duration-200 hover:bg-gray-50">
                         <!-- Radio Button -->
                         <div class="flex items-center justify-center sm:mr-4 mr-2">
                             <div v-if="selectedSort.id === option.id"
-                                class="w-5 h-5 bg-[#037D84] rounded-full flex items-center justify-center">
+                                class="w-5 h-5 bg-[#E4004F] rounded-full flex items-center justify-center">
                                 <check-icon />
                             </div>
                             <div v-else class="w-5 h-5 border-2 border-[#EDEDED] rounded-full"></div>
@@ -52,38 +37,14 @@
             </Transition>
         </div>
 
-        <!-- Category Dropdown -->
-        <!-- <div class="relative" ref="categoryRef">
-            <button @click="toggleCategory"
-                class="bg-[#F6F7F9] px-4 py-3 rounded-lg transition-all duration-300 flex items-center justify-between gap-3 min-w-[215px]">
-                <span class="text-[#0C1A30]">{{ selectedCategory }}</span>
-                <dropdown-icon :isRotate="isCategoryOpen" />
-            </button>
-
-            <Transition name="dropdown">
-                <div v-if="isCategoryOpen"
-                    class="absolute top-full left-0 mt-2 w-full max-h-[200px] overflow-y-auto bg-white shadow-xl border border-[#F6F7F9] rounded-lg z-50">
-                    <button v-for="(category, index) in categories" :key="index" @click="selectCategory(category)"
-                        class="w-full flex items-center px-4 py-3 cursor-pointer transition-all duration-200 hover:bg-gray-50"
-                        :class="{
-                'text-[#037D84] bg-[#F6F7F9]': selectedCategory === category,
-                'text-[#0C1A30]': selectedCategory !== category
-            }">
-                        {{ category }}
-                    </button>
-                </div>
-            </Transition>
-        </div> -->
-
     </section>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
-const emit = defineEmits(['openFilter', 'applySort'])
+const emit = defineEmits(['applySort'])
 // Refs
-const filterRef = ref(null)
 const sortRef = ref(null)
 
 // State

@@ -7,9 +7,6 @@ export const useCategoriesStore = defineStore("categories", () => {
   const loading = ref(true);
   const error = ref(null);
 
-  const bgColors = ["#E2FFF4", "#FFF6E2", "#FFEFE9", "#EEFFCA", "#D8F6FF", "#FFEAF5"];
-  const circleBgColors = ["#C1FFDC", "#FFE29E", "#FFC8B5", "#DCFB96", "#93E6FF", "#FFC8E5"];
-
   // --- Actions ---
 
   // 1. (GET /categories)
@@ -18,14 +15,8 @@ export const useCategoriesStore = defineStore("categories", () => {
     error.value = null;
     try {
       const { data } = await api.get("/categories/with_children/");
-      categories.value = await data.map((cat, index) => {
-        const colorIndex = index % 6;
-        return {
-          ...cat,
-          bg_color: bgColors[colorIndex],
-          circle_bg_color: circleBgColors[colorIndex],
-        };
-      });
+      categories.value = data
+      return data
     } catch (err) {
       error.value = err.message || "Category not found";
     } finally {

@@ -191,8 +191,8 @@
     "forgot_password": "Забыли пароль?",
     "create_account": "Создать аккаунт",
     "new_password": "Новый пароль",
-    "start_price": "Начальная цена",
-    "end_price": "Конечная цена",
+    "start_price": "Начальная",
+    "end_price": "Конечная",
     "resend_otp": "Отправить еще раз"
   },
   "warning": {

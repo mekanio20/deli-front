@@ -10,11 +10,11 @@ export const useSubcategoriesStore = defineStore("subcategories", () => {
   // --- Actions ---
 
   // 1. (GET /subcategories/)
-  const fetchSubcategories = async () => {
+  const fetchSubcategories = async (filteredOptions = {}) => {
     loading.value = true;
     error.value = null;
     try {
-      const { data } = await api.get("/subcategories/");
+      const { data } = await api.get("/subcategories/", { params: filteredOptions });
       subcategories.value = data.results;
     } catch (err) {
       error.value = err.message || "Subcategory not found";

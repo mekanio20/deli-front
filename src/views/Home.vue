@@ -5,15 +5,11 @@
       <!-- Categories -->
       <SectionHeaderGroup class="sm:pb-10 pb-6">
         <SectionTitle :title="$t('footer.categories')" class="pt-6" />
-        <ViewAllLink :title="$t('names.view_all')" />
+        <ViewAllLink :title="$t('names.view_all')" :to="'/categories'" />
       </SectionHeaderGroup>
-      <div class="grid grid-cols-1 gap-6">
-        <div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-6">
-          <CategoryCard v-for="item in categories" :key="item.id" :category="item" />
-        </div>
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-          <CategoryCard v-for="item in categories.slice(0, 3)" :key="item.id" :category="item" :isFlex="true" />
-        </div>
+      <div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+        <CategoryCard v-for="item in categories" :key="item.id" :category="item"
+          :class="[item.index >= 6 ? 'col-span-2' : '']" />
       </div>
     </MainContainer>
     <!-- Newest Products -->
@@ -57,13 +53,16 @@ const categoriesWithProducts = computed(() =>
 )
 
 onMounted(async () => {
-  await categoryStore.fetchCategories()
-
-  const [newest, popular, categories] = await Promise.all([
+  const [newest, popular, _categories] = await Promise.all([
     productStore.fetchProducts({ ordering: 'newest' }),
-    productStore.fetchProducts({ ordering: 'most_purchased' })
+    productStore.fetchProducts({ ordering: 'most_purchased' }),
+    categoryStore.fetchCategories()
   ])
 
+  categories.value = _categories.slice(0, 9).map((category, index) => ({
+    ...category,
+    index
+  }))
   newestProducts.value = newest
   mostPopularProducts.value = popular
 

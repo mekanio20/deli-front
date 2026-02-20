@@ -191,8 +191,8 @@
     "forgot_password": "Açar sözi unutdym",
     "create_account": "Hasap döretmek",
     "new_password": "Täze açar sözi",
-    "start_price": "Başlangyç bahasy",
-    "end_price": "Ahyrky bahasy",
+    "start_price": "Başlangyç",
+    "end_price": "Ahyrky",
     "resend_otp": "Täzeden ugrat"
   },
   "warning": {

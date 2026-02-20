@@ -28,7 +28,7 @@
                     1280: { slidesPerView: 3, spaceBetween: 20 }
                 }" class="flex items-center space-x-6">
                     <SwiperSlide v-for="(item, index) in products" :key="index" class="py-6">
-                        <TopProductCard :product="item" @toggleFavorite="(productId) => $emit('toggleFavorite', productId)" />
+                        <TopProductCard :product="item" />
                     </SwiperSlide>
                 </Swiper>
             </div>
@@ -52,11 +52,6 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['toggleFavorite'])
-
-const textColor = computed(() => {
-    return isMobile.value ? '#fff' : '#FBB103'
-})
 
 const checkScreenSize = () => {
     isMobile.value = window.innerWidth < 640

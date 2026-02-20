@@ -1,15 +1,17 @@
 <template>
     <div class="bg-white h-[180px] rounded-lg overflow-hidden p-[10px] relative cursor-pointer" @click="goToDetail">
         <!-- Badge Icon -->
-        <div
+        <button type="button" @click.stop="toggleFavorite(product.id)"
             class="absolute right-2 top-2 flex-shrink-0 sm:w-[40px] sm:h-[40px] w-[35px] h-[35px] bg-[#F5F5F7] rounded-full flex items-center justify-center">
-            <hearth-icon :color="'#A9A9A9'" :size="isMobile ? 14 : 18" />
-        </div>
+            <hearth-icon v-if="!isLiked" color="#A9A9A9" :size="isMobile ? 14 : 18" />
+            <hearth-icon v-else color="#FA004C" fill="#FA004C" :size="isMobile ? 14 : 18" />
+        </button>
 
         <div class="h-full flex items-center space-x-4">
             <!-- Product Image -->
             <div class="w-[40%] h-full bg-pink-100 rounded-md flex items-center justify-center shrink-0">
-                <img :src="product?.preview?.path || '/icons/default.webp'" class="w-full h-full object-cover rounded-md" />
+                <img :src="product?.preview?.path || '/icons/default.webp'"
+                    class="w-full h-full object-cover rounded-md" />
             </div>
 
             <!-- Content -->
@@ -32,7 +34,7 @@
                         <span v-else>{{ $t('buttons.add_to_cart') }}</span>
                     </button>
                 </div>
-                
+
                 <!-- Quantity Controls -->
                 <div v-else class="flex items-center space-x-2 rounded-md">
                     <button @click.stop="decreaseQuantity" :disabled="isLoading"
@@ -40,7 +42,9 @@
                         <minus-icon :size="16" color="white" />
                     </button>
                     <div class="text-center font-medium text-[#0C1A30] sm:min-w-[30px] min-w-[20px]">
-                        <div v-if="isLoading" class="animate-spin rounded-lg h-3 w-3 border border-gray-300 border-t-[#0C1A30] mx-auto"></div>
+                        <div v-if="isLoading"
+                            class="animate-spin rounded-lg h-3 w-3 border border-gray-300 border-t-[#0C1A30] mx-auto">
+                        </div>
                         <span v-else>{{ cartItem?.quantity || 0 }}</span>
                     </div>
                     <button @click.stop="increaseQuantity" :disabled="isLoading"
@@ -54,17 +58,24 @@
 </template>
 
 <script setup>
-const isMobile = ref(false)
-const cartStore = useCartStore()
-const { addItem, isInCart: checkIsInCart, getCartItem, increaseQuantity: cartIncreaseQuantity, decreaseQuantity: cartDecreaseQuantity, loading } = cartStore
-const isAddingToCart = ref(false)
+const router = useRouter()
 const props = defineProps({
     product: {
         type: Object,
         required: true
     }
-});
-const router = useRouter()
+})
+
+const authStore = useAuthStore()
+const appStore = useAppStore()
+const likesStore = useLikesStore()
+const cartStore = useCartStore()
+
+const isMobile = ref(false)
+const isAddingToCart = ref(false)
+const isLiked = ref(props.product.is_liked)
+
+const { addItem, isInCart: checkIsInCart, getCartItem, increaseQuantity: cartIncreaseQuantity, decreaseQuantity: cartDecreaseQuantity, loading } = cartStore
 
 // Computed properties
 const isInCart = computed(() => checkIsInCart(props.product.id))
@@ -74,6 +85,26 @@ const isLoading = computed(() => loading.value)
 const goToDetail = () => {
     router.push({ name: "ProductDetail", params: { id: props.product.id } })
 };
+
+const toggleFavorite = async (id) => {
+    try {
+        if (!authStore.isAuthenticated) {
+            await appStore.toggleModal('register')
+            return
+        }
+        isLiked.value = !isLiked.value
+        if (!props.product.is_liked) {
+            likesStore.createLike(id)
+            return
+        } else {
+            const likes = await likesStore.fetchLikes({ product: id })
+            await likesStore.deleteLike(likes[0].id)
+        }
+    } catch (error) {
+        console.log(error);
+        isLiked.value = !isLiked.value
+    }
+}
 
 const addToCart = async () => {
     if (isAddingToCart.value) return

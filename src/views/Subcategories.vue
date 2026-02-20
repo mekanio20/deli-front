@@ -10,7 +10,7 @@
         <div class="bg-white mt-10 pb-10">
             <div class="space-y-5">
                 <ProductSection :sectionTitle="categoryTitle || 'Harytlar'" :products="products" :isRedirectLink="true"
-                    :linkTitle="'Ählisini görmek'" :link="'/product/list'" @toggleFavorite="toggleFavorite" />
+                    :linkTitle="'Ählisini görmek'" :link="'/product/list'" />
             </div>
         </div>
     </div>
@@ -36,10 +36,6 @@ const loadData = async (id) => {
     } catch (e) {
         products.value = []
     }
-}
-
-const toggleFavorite = (productId) => {
-    // Implement favorite toggle if needed
 }
 
 onMounted(async () => {
