@@ -46,10 +46,12 @@ export const useClientAddressesStore = defineStore("client_addresses", () => {
     error.value = null;
     try {
       const { data } = await api.post("/client_addresses/", payload);
-      address_info.value = data;
-      // Optimistically add to list if list exists
-      addresses.value = Array.isArray(addresses.value) ? [data, ...addresses.value] : [data];
-      addressesCount.value = (addressesCount.value || 0) + 1;
+      if (data.is_primary) {
+        address_info.value = data;
+        const isPrimaryAddress = addresses.value.find((a) => a.is_primary);
+        if (isPrimaryAddress) isPrimaryAddress.is_primary = false
+      }
+      addresses.value.push(data);
       return data;
     } catch (err) {
       error.value = err.message || "Address create failed";

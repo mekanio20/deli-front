@@ -13,7 +13,7 @@
                     <!-- Form Section -->
                     <FormSection @submit="handleSubmit" class="space-y-8 flex-1 flex flex-col">
                         <FormGroup>
-                            <FormTitle :id="'full_name'" :title="$t('forms.name')" />
+                            <FormTitle :id="'full_name'" :title="$t('forms.fullname')" />
                             <FormInput v-model="formData.full_name" :label="'full_name'" />
                         </FormGroup>
 

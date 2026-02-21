@@ -81,7 +81,7 @@
                                         validationErrors.client_address }}</div>
                                 </FormGroup>
                                 <FormGroup v-if="!isClient">
-                                    <FormTitle :id="'firstname'" :title="$t('forms.name')" />
+                                    <FormTitle :id="'firstname'" :title="$t('forms.fullname')" />
                                     <FormInput v-model="formData.firstname" :label="'firstname'" />
                                 </FormGroup>
                                 <FormGroup v-if="!isClient">

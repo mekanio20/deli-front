@@ -159,15 +159,19 @@
     "clear": "Arassala",
     "send": "Ugratmak",
     "account_logout": "Hasapdan çykmak",
+    "account_delete": "Hasaby pozmak",
     "add_order": "Sargyt etmek",
     "add_order_loading": "Sargyt edilýär...",
     "use": "Ulan",
     "used": "Ulanylýar...",
     "apply_cashback": "Ball gazanmak",
-    "use_balance": "Ballary ulanmak"
+    "use_balance": "Ballary ulanmak",
+    "address_delete": "Salgyny pozmak isleýärsiňizmi?",
+    "delete_your_account": "Hasaby pozmak isleýärsiňizmi?"
   },
   "forms": {
-    "name": "Doly Adyňyz",
+    "name": "Adyňyz",
+    "fullname": "Doly Adyňyz",
     "surname": "Familiýaňyz",
     "password": "Açar sözi",
     "phoneNumber": "Telefon",

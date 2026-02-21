@@ -159,15 +159,19 @@
     "clear": "Очистить",
     "send": "Отправить",
     "account_logout": "Выйти из аккаунта",
+    "account_delete": "Удалить аккаунт",
     "add_order": "Оформить заказ",
     "add_order_loading": "Заказ оформляется...",
     "use": "Использовать",
     "used": "Используется...",
     "apply_cashback": "Начислить баллы",
-    "use_balance": "Использовать баллы"
+    "use_balance": "Использовать баллы",
+    "address_delete": "Вы хотите удалить адрес?",
+    "delete_your_account": "Вы хотите удалить аккаунт?"
   },
   "forms": {
-    "name": "Полное имя",
+    "name": "Имя",
+    "fullname": "Полное имя",
     "surname": "Фамилия",
     "password": "Пароль",
     "phoneNumber": "Телефон",

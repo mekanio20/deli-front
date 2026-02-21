@@ -24,7 +24,7 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-const { t, locale } = useI18n({ useScope: 'global' })
+const { locale } = useI18n({ useScope: 'global' })
 
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination } from "swiper/modules";

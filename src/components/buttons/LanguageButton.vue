@@ -18,7 +18,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { onClickOutside } from '@vueuse/core'
-const { t, locale } = useI18n({ useScope: 'global' })
+const { locale } = useI18n({ useScope: 'global' })
 const langs = [
     { id: 1, name: 'TK', desc: 'Türkmen dili', lang: 'TK' },
     { id: 2, name: 'RU', desc: 'Русский', lang: 'RU' },

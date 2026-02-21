@@ -25,7 +25,7 @@
                         <FormSection @submit="handleSubmit" class="space-y-4">
                             <!-- Fullname Field -->
                             <FormGroup>
-                                <FormTitle :id="'fullname'" :title="$t('forms.name')" />
+                                <FormTitle :id="'fullname'" :title="$t('forms.fullname')" />
                                 <FormInput v-model="fullname" :label="'fullname'" :placeholder="''" />
                             </FormGroup>
 

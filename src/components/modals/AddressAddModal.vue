@@ -19,14 +19,14 @@
                         <h2 class="text-[22px] text-center font-medium text-[#0C1A30]">
                             {{ isEdit ? $t('forms.update_address') : $t('forms.add_address') }}
                         </h2>
-                        <button @click="$emit('close')"
+                        <button type="button" @click="$emit('close')"
                             class="absolute top-8 right-5 flex items-center justify-center bg-[#F6F7F9] rounded-full hover:bg-gray-100">
                             <close-icon />
                         </button>
                     </div>
 
                     <!-- Content -->
-                    <FormSection @submit="handleSubmit" class="grid grid-cols-2 gap-2">
+                    <FormSection class="grid grid-cols-2 gap-2">
                         <!-- Region Selector -->
                         <FormGroup>
                             <FormTitle :id="'region'" :title="$t('forms.select_street')" />
@@ -83,9 +83,11 @@
 
                     <!-- Footer Button -->
                     <div class="p-4 mx-auto sm:w-fit w-full">
-                        <button @click="handleSubmit"
-                            class="sm:w-[390px] w-full bg-[#FEB918] text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-500 transition-colors transform hover:scale-[1.02] active:scale-[0.98]">
-                            {{ isEdit ? $t('buttons.update') : $t('buttons.add') }}
+                        <button type="submit" @click="handleSubmit" :disabled="addressStore.loading"
+                            class="sm:w-[390px] w-full bg-[#DE0045] text-white font-bold py-3 px-4 rounded-full transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                            :class="{'opacity-30 cursor-not-allowed' : addressStore.loading}">
+                            <span v-if="!addressStore.loading">{{ isEdit ? $t('buttons.update') : $t('buttons.add') }}</span>
+                            <span v-else>{{ $t('buttons.loading') }}</span>
                         </button>
                     </div>
                 </div>
@@ -108,6 +110,7 @@ let mapInstance = null;
 let markerInstance = null;
 
 const regionsStore = useRegionsStore();
+const addressStore = useClientAddressesStore();
 const { regions } = storeToRefs(regionsStore);
 const { fetchRegions } = regionsStore;
 
@@ -161,12 +164,6 @@ const fetchAddress = async (lat, lng) => {
     } catch (err) {
         console.error("Error fetching address:", err);
     }
-};
-
-const mergeFormDataValues = (data) => {
-    return Object.values(data)
-        .filter(val => val !== null && val !== undefined && val !== '')
-        .join(' ');
 };
 
 const initializeMap = async () => {

@@ -12,7 +12,7 @@
                 leave-active-class="transition-transform duration-200 ease-in"
                 leave-from-class="translate-y-0 sm:scale-100" leave-to-class="translate-y-full sm:scale-95">
                 <div v-show="show"
-                    class="bg-white w-[500px] overflow-y-auto px-8 py-4 rounded-[14px] flex flex-col relative"
+                    class="bg-white w-[500px] overflow-y-auto px-8 py-6 rounded-[30px] flex flex-col relative"
                     @click.stop>
 
                     <!-- Header -->
@@ -36,7 +36,7 @@
                                 <input v-for="(_, index) in codeInputs" :key="index" v-model="codeInputs[index]"
                                     @input="handleInput(index)" @keydown.backspace="handleBackspace(index)"
                                     maxlength="1" :ref="el => inputRefs[index] = el"
-                                    class="w-full h-14 text-center text-base font-sf_pro font-medium text-black rounded-lg bg-[#F6F7F9] focus:outline-none focus:ring-1 focus:ring-[#FEB918] focus:bg-white"
+                                    class="w-full h-14 text-center text-base font-sf_pro font-medium text-black rounded-lg bg-[#F6F7F9] focus:outline-none focus:ring-1 focus:ring-[#DE0045] focus:bg-white"
                                     type="text" inputmode="numeric" />
                             </div>
 
@@ -87,7 +87,7 @@
 
                     <!-- Footer Button -->
                     <button @click="handleSubmit" :disabled="loading || !isCodeComplete && section === 2"
-                        class="w-full mt-6 bg-[#FEB918] text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-500 transition-colors transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
+                        class="w-full mt-8 bg-[#DE0045] text-white font-bold py-3 px-4 rounded-full transition-colors transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
                         {{ loading ? $t('buttons.udpating') : $t('buttons.update') }}
                     </button>
                 </div>
@@ -101,13 +101,12 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useToast } from '@/composables/useToast'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const authStore = useAuthStore()
-const { sendOtp: sendOtpApi, resetPassword: resetPasswordApi } = authStore
-const { toasts, removeToast, handleApiError } = useToast()
+const clientStore = useClientStore()
+const { toasts, removeToast, handleApiError, success } = useToast()
 
 const props = defineProps({ show: Boolean })
 const emit = defineEmits(['close', 'submit'])
@@ -122,10 +121,9 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const section = ref(1)
 const loading = ref(false)
-const otpLoading = ref(false)
 
 const formData = ref({
-    identifier: String(authStore.user.phone_number).trim() || String(authStore.user.email).trim(),
+    identifier: String(clientStore.account?.phone_number).trim() || String(clientStore.account?.email).trim(),
     otp: '',
     new_password: '',
     confirm_password: ''
@@ -178,30 +176,27 @@ const handleBackspace = (index) => {
 
 // 🔹 Send OTP
 const sendOtp = async () => {
-    otpLoading.value = true
     try {
-        await sendOtpApi({ identifier: formData.value.identifier, purpose: 'reset_password' })
+        await authStore.sendOtp({ identifier: formData.value.identifier, purpose: 'reset_password' })
         isTimerActive.value = true
         startTimer()
     } catch (e) {
         console.error('OTP send failed:', e)
-    } finally {
-        otpLoading.value = false
     }
 }
 
 // 🔹 Handle form submit
 const handleSubmit = async () => {
     if (section.value === 1 && formData.value.new_password.length < 8) {
-        handleApiError($t('warning.error'), $t('warning.password_length'))
+        handleApiError(t('warning.password_length'))
         return
     }
     if (formData.value.new_password !== formData.value.confirm_password) {
-        handleApiError($t('warning.error'), $t('warning.password_mismatch'))
+        handleApiError(t('warning.password_mismatch'))
         return
     }
     if (section.value === 2 && !isCodeComplete.value) {
-        handleApiError($t('warning.error'), $t('warning.otp_length'))
+        handleApiError(t('warning.otp_length'))
         return
     }
 
@@ -215,11 +210,13 @@ const handleSubmit = async () => {
     // Step 2 → verify OTP and reset password
     try {
         loading.value = true
-        await resetPasswordApi({
+        await authStore.resetPassword({
             identifier: String(formData.value.identifier).trim(),
             otp: [...codeInputs.value].join(''),
             new_password: formData.value.new_password
         })
+        success(t('success.reset_password'))
+        clearFormData()
         emit('submit', true)
     } catch (e) {
         console.error('Password reset failed:', e)
@@ -232,6 +229,16 @@ const handleSubmit = async () => {
 const togglePassword = (id) => {
     if (id === 1) showPassword.value = !showPassword.value
     else showConfirmPassword.value = !showConfirmPassword.value
+}
+
+const clearFormData = () => {
+    section.value = 1
+    formData.value = {
+        identifier: '',
+        otp: '',
+        new_password: '',
+        confirm_password: ''
+    }
 }
 
 // Reset form when modal closes

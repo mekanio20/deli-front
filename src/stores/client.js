@@ -42,6 +42,21 @@ export const useClientStore = defineStore("client", () => {
     }
   };
 
+  // DELETE
+  const  deleteAccount = async (id) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const { data } = await api.delete(`/clients/${id}/`);
+      account.value = data;
+      return data;
+    } catch (err) {
+      error.value = err.message || "Account delete failed";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
 
   return {
     // state
@@ -51,6 +66,7 @@ export const useClientStore = defineStore("client", () => {
     error,
     // actions
     fetchAccount,
-    updateAccount
+    updateAccount,
+    deleteAccount
   };
 });

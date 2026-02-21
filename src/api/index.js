@@ -7,16 +7,15 @@ import {
   clearTokens,
 } from "@/composables/useTokens";
 import router from "@/router/index.js";
-import { useAppStore } from "@/stores/app";
 
 const api = axios.create({
-  baseURL: "https://tamrahat.com.tm:8000/api/v1/",
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
   crossdomain: true,
   xsrfCookieName: "csrftoken",
   xsrfHeaderName: "X-CSRFToken",
   headers: {
     "Content-Type": "application/json",
-    "Accept-Language": localStorage.getItem("lang") || "TK",
+    "Accept-Language": localStorage.getItem("lang") || "tk",
   },
   withCredentials: true,
 });
@@ -29,7 +28,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 let isRefreshing = false;
@@ -49,12 +48,7 @@ const processQueue = (error, token = null) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const appStore = useAppStore();
     const originalRequest = error.config;
-
-    if (appStore.activeModal === 'login') {
-      return Promise.reject(error);
-    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -76,7 +70,6 @@ api.interceptors.response.use(
 
         setAccessToken(data.access);
         setRefreshToken(data.refresh);
-        setUserData(data.user);
         processQueue(null, data.access);
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return api(originalRequest);
@@ -91,7 +84,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
